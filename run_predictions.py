@@ -61,27 +61,27 @@ def detect_red_light(I):
         print("max p:", max(peaks[1]['peak_heights']))
         peaks[1]['peak_heights']=peaks[1]['peak_heights']/float(max(peaks[1]['peak_heights']))
         sorted_peaks=peaks[0][np.argsort(peaks[1]['peak_heights'])]
-        sort_peaks=np.intersect1d(sort_peaks,sorted_peaks)
+        sort_peaks=np.append(sort_peaks,sorted_peaks)
     if len(peaks1) >= 2 and peaks1[1]['peak_heights'] != []:
         print("max p1:", max(peaks1[1]['peak_heights']))
         peaks1[1]['peak_heights']=peaks1[1]['peak_heights']/float(max(peaks1[1]['peak_heights']))
         sorted_peaks1=peaks1[0][np.argsort(peaks1[1]['peak_heights'])]
-        sort_peaks=np.intersect1d(sort_peaks,sorted_peaks1)
+        sort_peaks=np.append(sort_peaks,sorted_peaks1)
     if len(peaks2) >= 2 and peaks2[1]['peak_heights'] != []:
         print("max p2:", max(peaks2[1]['peak_heights']))
         peaks2[1]['peak_heights']=peaks2[1]['peak_heights']/float(max(peaks2[1]['peak_heights']))
         sorted_peaks2=peaks2[0][np.argsort(peaks2[1]['peak_heights'])]
-        sort_peaks=np.intersect1d(sort_peaks,sorted_peaks2)
+        sort_peaks=np.append(sort_peaks,sorted_peaks2)
     if len(peaks3) >= 2 and peaks3[1]['peak_heights'] != []:
         print("max p3:", max(peaks3[1]['peak_heights']))
         peaks3[1]['peak_heights']=peaks3[1]['peak_heights']/float(max(peaks3[1]['peak_heights']))
         sorted_peaks3=peaks3[0][np.argsort(peaks3[1]['peak_heights'])]
-        sort_peaks=np.intersect1d(sort_peaks,sorted_peaks3)
+        sort_peaks=np.append(sort_peaks,sorted_peaks3)
     if len(peaks4) >= 2 and peaks4[1]['peak_heights'] != []:
         print("max p4:", max(peaks4[1]['peak_heights']))
         peaks4[1]['peak_heights']=peaks4[1]['peak_heights']/float(max(peaks4[1]['peak_heights']))
         sorted_peaks4=peaks4[0][np.argsort(peaks4[1]['peak_heights'])]
-        sort_peaks=np.intersect1d(sort_peaks,sorted_peaks4)
+        sort_peaks=np.append(sort_peaks,sorted_peaks4)
     print(type(sort_peaks))
     if type(sort_peaks) != type([]):
         sort_peaks = sort_peaks.astype(int)
