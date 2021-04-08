@@ -2,6 +2,8 @@ import os
 import numpy as np
 import json
 from PIL import Image
+import matplotlib.pyplot as plt
+from scipy.signal import find_peaks
 
 def detect_red_light(I):
     '''
@@ -24,27 +26,33 @@ def detect_red_light(I):
     '''
     BEGIN YOUR CODE
     '''
-    
-    '''
-    As an example, here's code that generates between 1 and 5 random boxes
-    of fixed size and returns the results in the proper format.
-    '''
-    
-    box_height = 8
-    box_width = 6
-    
-    num_boxes = np.random.randint(1,5) 
-    
-    for i in range(num_boxes):
-        (n_rows,n_cols,n_channels) = np.shape(I)
-        
-        tl_row = np.random.randint(n_rows - box_height)
-        tl_col = np.random.randint(n_cols - box_width)
-        br_row = tl_row + box_height
-        br_col = tl_col + box_width
-        
-        bounding_boxes.append([tl_row,tl_col,br_row,br_col]) 
-    
+    rl = Image.open('../redlight.jpg')
+
+    rl1d=(np.reshape(rl,np.shape(rl)[0]*np.shape(rl)[1]*3)/255.0)[::-1]
+    cv=np.convolve(np.reshape(I,np.shape(I)[0]*np.shape(I)[1]*3)/255.0,rl1d)
+
+    #plt.plot(range(0, len(cv)), cv)
+    #plt.show()
+
+    cv_r=np.resize(cv,np.shape(I))
+    peaks1=find_peaks(cv, height=170, distance=3*np.shape(rl)[1])
+    print(peaks1)
+    if peaks1[1]['peak_heights'] != []:
+        print(max(peaks1[1]['peak_heights']))
+    peaks = peaks1[0] #np.append(np.append(np.append(peaks1[0],peaks2[0]),peaks3[0]),peaks4[0])
+    peaks = np.sort(peaks)
+    l_r = np.floor(0.5)
+    l_c = np.floor(0.5)
+    peaks_inb = [p for p in peaks if p < np.shape(I)[0]*np.shape(I)[1]*3]
+    if peaks_inb != []:
+        points=np.unravel_index(peaks_inb, np.shape(I))
+        for i in range(0,len(points[0])):
+            tl_row = int(points[0][i]) 
+            tl_col = int(points[1][i]) 
+            br_row = int(tl_row + np.shape(rl)[0])
+            br_col = int(tl_col + np.shape(rl)[1])
+            if tl_row > l_r+np.shape(rl)[0] or tl_col > l_c+np.shape(rl)[1]:
+                bounding_boxes.append([tl_row,tl_col,br_row,br_col])
     '''
     END YOUR CODE
     '''
@@ -71,6 +79,7 @@ preds = {}
 for i in range(len(file_names)):
     
     # read image using PIL:
+    print(os.path.join(data_path,file_names[i]))
     I = Image.open(os.path.join(data_path,file_names[i]))
     
     # convert to numpy array:
