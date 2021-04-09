@@ -42,20 +42,20 @@ def detect_red_light(I):
     irs = np.reshape(I,np.shape(I)[0]*np.shape(I)[1]*3)/255.0
     for i in range(0, len(irs)):
         matches = None
-        if i+len(rl1d) < len(irs) and (all(abs(i - j) < .25 for i, j in zip(irs[i:i+len(rl1d)],rl1d))): # or -len(np.intersect1d(rl1d, irs[i:i+len(rl1d)])) + len(rl1d) < 20):
+        if i+len(rl1d) < len(irs) and np.abs(np.sum(np.subtract(irs[i:i+len(rl1d)],rl1d))) < .25: 
             matches = i
-        if i+len(rl11d) < len(irs) and  (all(abs(i - j) < .05 for i, j in zip(irs[i:i+len(rl11d)],rl11d)) ): #or -len(np.intersect1d(rl11d, irs[i:i+len(rl11d)])) + len(rl11d) < 20):
+        if i+len(rl11d) < len(irs) and np.abs(np.sum(np.subtract(irs[i:i+len(rl11d)],rl11d))) < .25: 
             matches = i
-        if i+len(rl21d) < len(irs) and  (all(abs(i - j) < .05 for i, j in zip(irs[i:i+len(rl21d)],rl21d))): #or -len(np.intersect1d(rl21d, irs[i:i+len(rl21d)])) + len(rl21d) < 20):
+        if i+len(rl21d) < len(irs) and np.abs(np.sum(np.subtract(irs[i:i+len(rl21d)],rl21d))) < .25: 
             matches = i
-        if i+len(rl31d) < len(irs) and  (all(abs(i - j) < .05 for i, j in zip(irs[i:i+len(rl31d)],rl31d)) ): #or -len(np.intersect1d(rl31d, irs[i:i+len(rl31d)])) + len(rl31d) < 20):
+        if i+len(rl31d) < len(irs) and np.abs(np.sum(np.subtract(irs[i:i+len(rl31d)],rl31d))) < .25: 
             matches = i
-        if i+len(rl41d) < len(irs) and  (all(abs(i - j) < .05 for i, j in zip(irs[i:i+len(rl41d)],rl41d))  ): #or -len(np.intersect1d(rl41d, irs[i:i+len(rl41d)])) + len(rl41d) < 20):
+        if i+len(rl41d) < len(irs) and np.abs(np.sum(np.subtract(irs[i:i+len(rl41d)],rl41d))) < .25: 
             matches = i
         if  matches != None:
             points=np.unravel_index(i, np.shape(I))
-            tl_row = int(points[0][i])
-            tl_col = int(points[1][i])
+            tl_row = int(points[0])
+            tl_col = int(points[1])
             br_row = int(tl_row + np.shape(rl1)[0])
             br_col = int(tl_col + np.shape(rl1)[1])
     
